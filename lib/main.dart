@@ -21,13 +21,71 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("I tuoi contatti"),
+          centerTitle: true,
+          actions: <Widget>[
+            PopupMenuButton(
+              itemBuilder: (context) => [
+                PopupMenuItem(child: Text("Logout")),
+              ],
+            ),
+          ],
+        ),
+        drawer: Drawer(),
         body: Stack(
-      children: <Widget>[
-        Positioned(right: 0, top: 0, bottom: 0, child: Sidebar()),
-        Positioned(left: 0, top: 0, bottom: 0, right: 100, child: Content())
-      ],
-    ));
+          children: <Widget>[
+            Positioned(right: 0, top: 0, bottom: 0, child: Sidebar()),
+            Positioned(left: 0, top: 0, bottom: 0, right: 100, child: Content())
+          ],
+        ));
+  }
+}
+
+class Drawer extends StatefulWidget {
+  const Drawer({super.key});
+
+  @override
+  State<Drawer> createState() => _DrawerState();
+}
+
+class _DrawerState extends State<Drawer> {
+  bool _automaticLogin = false;
+
+  void onAutomaticLoginChange(bool value) {
+    setState(() {
+      _automaticLogin = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 300,
+        color: Colors.white,
+        child: SafeArea(
+          child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Settings",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    ListTile(
+                      title: Text("Automatic Login"),
+                      subtitle: Text("When enabled user auto-login"),
+                      trailing: Switch(
+                        value: _automaticLogin,
+                        onChanged: onAutomaticLoginChange,
+                      ),
+                    )
+                  ])),
+        ));
   }
 }
 
